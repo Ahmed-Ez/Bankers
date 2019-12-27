@@ -5,6 +5,26 @@ var data;
 var alloc=[[]];
 var max = [[]];
 var available=[];
+//testing values
+// alloc=[[0,1,0],
+// [2,0,0],
+// [3,0,2],
+// [2,1,1],
+// [0,0,2]
+// ];
+
+// max=[[7,5,3],
+// [3,2,2],
+// [9,0,2],
+// [2,2,2],
+// [4,3,3]
+// ];
+
+// available=[
+//     3,3,2
+// ];
+
+
 
 //get number of inputs
 $( "#initial-submit" ).submit(function( event ) {
@@ -35,7 +55,7 @@ function createInputs(){
         div.classList.add('form-group');
         div.classList.add('div-con');
         var p = document.createElement('p');
-        p.innerText='Process '+(i+1);
+        p.innerText='Process '+(i);
         p.classList.add('text-info');
         div.appendChild(p);
 
@@ -115,7 +135,7 @@ function formatInput(){
     let temp=[];
     for(i=0;i<(data.length)-resources;i++){
         // console.log(data[i].value);
-        temp.push(data[i].value);
+        temp.push(parseInt(data[i].value));
         count++;
         if(count>=resources){
             count=0;
@@ -132,10 +152,12 @@ function formatInput(){
 
     max.shift();
     alloc.shift();
+
     available=data.slice(1).slice(-resources);
     for(i=0;i<available.length;i++){
-        available[i]=available[i].value;
+        available[i]=parseInt(available[i].value);
     }
+
 
 }
 
@@ -144,19 +166,19 @@ function calculateNeed(){
     let need=[];
     for (i=0;i<processes;i++){
         // #temp list to hold needed values before appending to the need list
-        tempList=[]
+        tempList=[];
         for(j=0;j<resources;j++){
             tempList.push(max[i][j]-alloc[i][j]);
         }
-        need.push(tempList)
+        need.push(tempList);
     }
-    return need
+    return need;
 
 }
 
 function safeSeq(){
     
-formatInput();
+   formatInput();
 
     //Resources needed for each process
     let need=[]
@@ -167,8 +189,15 @@ formatInput();
     finished.length=processes;
     finished.fill(false);
 
+    console.log(alloc);
+    console.log(max);
+    console.log(need);
+    console.log(available);
+    
+
     // #safe seq
     let safe=[];
+    console.log(safe);
 
     // #boolean to check if any process was allocated
     // #if no process is allocated then system is in deadlock or safesequence was found
@@ -179,7 +208,7 @@ formatInput();
         for (i=0;i<processes;i++){
             if (finished[i] == false){
                 // #boolean run to check if needed resources are less than or equal to available
-                 var run=true;
+                 let run=true;
                 for(j=0;j<resources;j++){
                     if (need[i][j] > available[j]){
                         run=false;
@@ -189,7 +218,7 @@ formatInput();
                 if (run == true) {
                         allocated=true;
                         finished[i]=true;
-                        safe.push(i+1);
+                        safe.push(i);
                         for(j=0;j<resources;j++){
                             available[j]=available[j]+alloc[i][j];
                         }
@@ -198,12 +227,14 @@ formatInput();
         }
     }
 
+    console.log(safe);
+    console.log(available);
+
     return safe;
 }
 
 function showSafeSeq(){
     safe=safeSeq();
-    console.log(safe);
     var outputDiv= document.createElement('div');
     outputDiv.classList.add('alert');
     var output = document.createElement('strong');
