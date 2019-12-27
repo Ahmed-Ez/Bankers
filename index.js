@@ -16,11 +16,8 @@ $( "#initial-submit" ).submit(function( event ) {
     createInputs();
     whichInput=1;
     }else{
-        console.log(safeSeq());
-        console.log(calculateNeed());
-        console.log(alloc);
-        console.log(max);
-
+        this.remove();
+        showSafeSeq();
     }
   });
 
@@ -38,7 +35,7 @@ function createInputs(){
         div.classList.add('form-group');
         div.classList.add('div-con');
         var p = document.createElement('p');
-        p.innerText='Process '+i;
+        p.innerText='Process '+(i+1);
         p.classList.add('text-info');
         div.appendChild(p);
 
@@ -192,7 +189,7 @@ formatInput();
                 if (run == true) {
                         allocated=true;
                         finished[i]=true;
-                        safe.push(i);
+                        safe.push(i+1);
                         for(j=0;j<resources;j++){
                             available[j]=available[j]+alloc[i][j];
                         }
@@ -202,7 +199,22 @@ formatInput();
     }
 
     return safe;
+}
 
+function showSafeSeq(){
+    safe=safeSeq();
+    var safeText;
+    for(i=0;i<safe.length;i++){
+        safeText=safe[i]+" ";
+    }
+   var outputDiv= document.createElement('div');
+   outputDiv.classList.add('alert');
+   outputDiv.classList.add('alert-success');
+   var output = document.createElement('strong');
+   output.innerText='The Safe sequence is: '+safeText;
+   outputDiv.appendChild(output);
+   var container = document.getElementsByClassName('container')[0];
+   container.appendChild(outputDiv);
 }
 
 //TO DO LIST
