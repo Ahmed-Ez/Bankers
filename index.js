@@ -220,13 +220,17 @@ function showSafeSeq(){
     }
     
    outputDiv.appendChild(output);
+   var refreshButton = document.createElement('button');
+   refreshButton.classList.add('btn');
+   refreshButton.classList.add('btn-primary');
+   refreshButton.classList.add('btn-lg');
+   refreshButton.classList.add('btn-block');
+   refreshButton.innerText="Retry";
+   refreshButton.addEventListener('click',function(){
+       location.reload();
+   });
    var container = document.getElementsByClassName('container')[0];
    container.appendChild(outputDiv);
+   container.appendChild(refreshButton);
 }
 
-//TO DO LIST
-/*
-FIX actual algorithm
-display output
-add navbar for no reason
-*/

@@ -53,4 +53,9 @@ margin: 1rem;
     font-size:2rem;
     padding:1rem;
     text-align: center;
+    width: 100%;
+}
+
+.btn-lg{
+    width: 100%;
 }
