@@ -6,7 +6,7 @@
     text-align: center;
     padding: 1rem;
     margin: 3rem;
-    font-size: 4rem;
+    font-size: 5rem;
     color: #621055;
 }
 
@@ -47,3 +47,9 @@ width: 50%;
 margin: 1rem;
 }
 
+
+.alert{
+    font-size:2rem;
+    padding:1rem;
+    text-align: center;
+}

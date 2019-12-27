@@ -203,15 +203,22 @@ formatInput();
 
 function showSafeSeq(){
     safe=safeSeq();
-    var safeText;
-    for(i=0;i<safe.length;i++){
-        safeText=safe[i]+" ";
+    console.log(safe);
+    var outputDiv= document.createElement('div');
+    outputDiv.classList.add('alert');
+    var output = document.createElement('strong');
+    if(safe.length != processes){
+        outputDiv.classList.add('alert-danger');
+        output.innerText='No safe sequence Found ! System is in a Dead Lock'
+    }else{
+        var text='';
+        for(i=0;i<safe.length;i++){
+            text+="P"+safe[i]+" ";
+        }
+       outputDiv.classList.add('alert-success');
+       output.innerText='The Safe sequence is: '+text;
     }
-   var outputDiv= document.createElement('div');
-   outputDiv.classList.add('alert');
-   outputDiv.classList.add('alert-success');
-   var output = document.createElement('strong');
-   output.innerText='The Safe sequence is: '+safeText;
+    
    outputDiv.appendChild(output);
    var container = document.getElementsByClassName('container')[0];
    container.appendChild(outputDiv);
