@@ -16,9 +16,11 @@ $( "#initial-submit" ).submit(function( event ) {
     createInputs();
     whichInput=1;
     }else{
-        formatInput();
-        console.log(calculateNeed());
         console.log(safeSeq());
+        console.log(calculateNeed());
+        console.log(alloc);
+        console.log(max);
+
     }
   });
 
@@ -131,6 +133,8 @@ function formatInput(){
         }
     }
 
+    max.shift();
+    alloc.shift();
     available=data.slice(1).slice(-resources);
     for(i=0;i<available.length;i++){
         available[i]=available[i].value;
@@ -141,7 +145,7 @@ function formatInput(){
 
 function calculateNeed(){
     let need=[];
-    for (i=1;i<=processes;i++){
+    for (i=0;i<processes;i++){
         // #temp list to hold needed values before appending to the need list
         tempList=[]
         for(j=0;j<resources;j++){
@@ -155,46 +159,49 @@ function calculateNeed(){
 
 function safeSeq(){
     
+formatInput();
 
     //Resources needed for each process
     let need=[]
     need=calculateNeed();
 
     // #finished processes initialized all to false
-    let finished=[false]*processes
-    
+    let finished=[];
+    finished.length=processes;
+    finished.fill(false);
+
     // #safe seq
-    let safe=[]
+    let safe=[];
 
     // #boolean to check if any process was allocated
     // #if no process is allocated then system is in deadlock or safesequence was found
-   var allocated = true
+   var allocated = true;
 
-    while(allocated){
-        allocated=false
-        for (i=1;i<=processes;i++){
+    while(allocated == true){
+        allocated=false;
+        for (i=0;i<processes;i++){
             if (finished[i] == false){
                 // #boolean run to check if needed resources are less than or equal to available
-                 var run=true
+                 var run=true;
                 for(j=0;j<resources;j++){
                     if (need[i][j] > available[j]){
-                        run=false
-                        break
+                        run=false;
+                        break;
                     }
                 }
+                if (run == true) {
+                        allocated=true;
+                        finished[i]=true;
+                        safe.push(i);
+                        for(j=0;j<resources;j++){
+                            available[j]=available[j]+alloc[i][j];
+                        }
+                    }
             }
-                if (run) {
-                    allocated=true
-                    finished[i]=true
-                    safe.push(i)
-                    for(j=0;j<resources;j++){
-                        available[j]=available[j]+alloc[i][j];
-                    }
-                }
         }
     }
 
-    return safe
+    return safe;
 
 }
 
